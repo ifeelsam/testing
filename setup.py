@@ -29,6 +29,7 @@ extras_require = {
         "sphinx>=6.0.0",
         "sphinx_rtd_theme>=1.0.0",
         "towncrier>=24,<25",
+        "pytest>=7.0.0",
     ],
     "test": [
         "p2pclient==0.2.0",
@@ -65,6 +66,7 @@ install_requires = [
     "rpcudp>=3.0.0",
     "trio-typing>=0.0.4",
     "trio>=0.26.0",
+    "aiortc>=1.5.0",
 ]
 
 # Add platform-specific dependencies

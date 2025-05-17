@@ -1,29 +1,41 @@
-import base58
+import base64
+import datetime
 import hashlib
 import ssl
 from typing import (
     Optional,
-    List,
-    Tuple,
 )
-from cryptography import x509
-from cryptography.hazmat.backends import default_backend
-import hashlib
-import base64
-from cryptography import x509
-from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.x509.oid import NameOID
-import datetime
-from multiaddr import Multiaddr
-from typing import Tuple
-from aiortc import RTCCertificate
+
+from aiortc import (
+    RTCCertificate,
+)
+import base58
+from cryptography import (
+    x509,
+)
+from cryptography.hazmat.backends import (
+    default_backend,
+)
+from cryptography.hazmat.primitives import (
+    hashes,
+    serialization,
+)
+from cryptography.hazmat.primitives.asymmetric import (
+    rsa,
+)
+from cryptography.x509.oid import (
+    NameOID,
+)
+from multiaddr import (
+    Multiaddr,
+)
 from multiaddr.protocols import (
     Protocol,
     add_protocol,
 )
 
 SIGNAL_PROTOCOL = "/libp2p/webrtc/signal/1.0.0"
+
 
 class CertificateManager(RTCCertificate):
     def __init__(self):
@@ -35,9 +47,9 @@ class CertificateManager(RTCCertificate):
         self.private_key = rsa.generate_private_key(
             public_exponent=65537, key_size=2048
         )
-        subject = issuer = x509.Name([
-            x509.NameAttribute(NameOID.COMMON_NAME, common_name)
-        ])
+        subject = issuer = x509.Name(
+            [x509.NameAttribute(NameOID.COMMON_NAME, common_name)]
+        )
         self.certificate = (
             x509.CertificateBuilder()
             .subject_name(subject)
@@ -70,7 +82,7 @@ class CertificateManager(RTCCertificate):
         )
 
 
-def parse_webrtc_maddr(maddr: Multiaddr) -> Tuple[str, int, str]:
+def parse_webrtc_maddr(maddr: Multiaddr) -> tuple[str, int, str]:
     """
     Parse a WebRTC multiaddr like:
     /ip4/127.0.0.1/udp/5000/webrtc/certhash/<hash>/p2p/<peer-id>
@@ -111,14 +123,14 @@ def generate_webrtc_multiaddr(
     # certhash = generate_local_certhash()
     if not certhash:
         raise ValueError("certhash must be provided for /webrtc-direct multiaddr")
-    
-    certificate= RTCCertificate.generateCertificate()
+
+    RTCCertificate.generateCertificate()
     base = f"/ip4/{ip}/udp/9000/webrtc-direct/certhash/{certhash}/p2p/{peer_id}"
-  
+
     return Multiaddr(base)
 
 
-def filter_addresses(addrs: List[Multiaddr]) -> List[Multiaddr]:
+def filter_addresses(addrs: list[Multiaddr]) -> list[Multiaddr]:
     """
     Filters the given list of multiaddresses,
     returning only those that are valid for WebRTC transport.
